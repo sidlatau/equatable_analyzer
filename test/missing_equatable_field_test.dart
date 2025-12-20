@@ -79,4 +79,38 @@ class MyState extends Equatable {
 }
 ''');
   }
+
+  Future<void> test_function_field_ignored() async {
+    await assertNoDiagnostics(r'''
+import 'package:equatable/equatable.dart';
+
+class MyState extends Equatable {
+  final String id;
+  final VoidCallback onTap;
+
+  const MyState(this.id, this.onTap);
+
+  @override
+  List<Object> get props => [id];
+}
+
+typedef VoidCallback = void Function();
+''');
+  }
+
+  Future<void> test_raw_function_field_ignored() async {
+    await assertNoDiagnostics(r'''
+import 'package:equatable/equatable.dart';
+
+class MyState extends Equatable {
+  final String id;
+  final Function onSomething;
+
+  const MyState(this.id, this.onSomething);
+
+  @override
+  List<Object> get props => [id];
+}
+''');
+  }
 }

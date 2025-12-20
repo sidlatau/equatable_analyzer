@@ -4,6 +4,7 @@ import 'package:analyzer/analysis_rule/rule_visitor_registry.dart';
 import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
+import 'package:analyzer/dart/element/type.dart';
 import 'package:analyzer/error/error.dart';
 
 class MissingEquatableFieldRule extends AnalysisRule {
@@ -91,6 +92,7 @@ class MissingEquatableFieldVisitor extends SimpleAstVisitor<void> {
     final fields = classElement.fields
         .where((f) => !f.isStatic && !f.isSynthetic && f.isFinal && !f.isConst)
         .where((f) => f.name != null)
+        .where((f) => f.type is! FunctionType && !f.type.isDartCoreFunction)
         .toList();
 
     final propsMethod = classNode.members
