@@ -22,12 +22,14 @@ class MissingEquatablePropertyRule extends AnalysisRule {
     registry.addClassDeclaration(this, visitor);
   }
 
-  @override
-  DiagnosticCode get diagnosticCode => const LintCode(
+  static const code = LintCode(
     'missing_equatable_property',
     'The field {0} is missing from props.',
     correctionMessage: 'Add the field to props.',
   );
+
+  @override
+  DiagnosticCode get diagnosticCode => code;
 }
 
 class MissingEquatablePropertyVisitor extends SimpleAstVisitor<void> {
@@ -82,6 +84,7 @@ class MissingEquatablePropertyVisitor extends SimpleAstVisitor<void> {
   ) {
     final fields = classElement.fields
         .where((f) => !f.isStatic && !f.isSynthetic && f.isFinal && !f.isConst)
+        .where((f) => f.name != null)
         .toList();
 
     final propsMethod = classNode.members
@@ -111,7 +114,6 @@ class MissingEquatablePropertyVisitor extends SimpleAstVisitor<void> {
     if (body is ExpressionFunctionBody) {
       return body.expression;
     } else if (body is BlockFunctionBody) {
-      // Find return statement
       for (final statement in body.block.statements) {
         if (statement is ReturnStatement) {
           return statement.expression;
