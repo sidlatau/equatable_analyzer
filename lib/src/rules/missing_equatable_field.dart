@@ -70,7 +70,8 @@ class MissingEquatableFieldVisitor extends SimpleAstVisitor<void> {
   bool _extendsEquatable(InterfaceElement? element) {
     if (element == null) return false;
     for (final type in element.allSupertypes) {
-      if (type.element.name == 'Equatable') {
+      if (type.element.name == 'Equatable' ||
+          type.element.name == 'EquatableMixin') {
         return true;
       }
     }

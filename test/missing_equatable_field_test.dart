@@ -24,6 +24,11 @@ class Equatable {
   const Equatable();
   List<Object?> get props => [];
 }
+
+mixin EquatableMixin {
+  List<Object?> get props => [];
+}
+
 ''');
     super.setUp();
   }
@@ -112,5 +117,24 @@ class MyState extends Equatable {
   List<Object> get props => [id];
 }
 ''');
+  }
+
+  Future<void> test_missing_property_mixin() async {
+    await assertDiagnostics(
+      r'''
+import 'package:equatable/equatable.dart';
+
+class MyState with EquatableMixin {
+  final String id;
+  final String name;
+
+  const MyState(this.id, this.name);
+
+  @override
+  List<Object> get props => [id];
+}
+''',
+      [lint(114, 4)],
+    );
   }
 }

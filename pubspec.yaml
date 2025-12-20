@@ -1,6 +1,6 @@
 name: equatable_analyzer
 description: A native analyzer plugin to ensure Equatable props are consistent.
-version: 0.0.1
+version: 1.0.0
 repository: https://github.com/sidlatau/equatable_analyzer
 
 environment:
