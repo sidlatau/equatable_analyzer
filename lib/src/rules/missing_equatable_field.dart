@@ -6,10 +6,10 @@ import 'package:analyzer/dart/ast/visitor.dart';
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/error/error.dart';
 
-class MissingEquatablePropertyRule extends AnalysisRule {
-  MissingEquatablePropertyRule()
+class MissingEquatableFieldRule extends AnalysisRule {
+  MissingEquatableFieldRule()
     : super(
-        name: 'missing_equatable_property',
+        name: 'missing_equatable_field',
         description: 'Equatable props should include all final fields.',
       );
 
@@ -18,12 +18,12 @@ class MissingEquatablePropertyRule extends AnalysisRule {
     RuleVisitorRegistry registry,
     RuleContext context,
   ) {
-    final visitor = MissingEquatablePropertyVisitor(this, context);
+    final visitor = MissingEquatableFieldVisitor(this, context);
     registry.addClassDeclaration(this, visitor);
   }
 
   static const code = LintCode(
-    'missing_equatable_property',
+    'missing_equatable_field',
     'The field {0} is missing from props.',
     correctionMessage: 'Add the field to props.',
   );
@@ -32,11 +32,11 @@ class MissingEquatablePropertyRule extends AnalysisRule {
   DiagnosticCode get diagnosticCode => code;
 }
 
-class MissingEquatablePropertyVisitor extends SimpleAstVisitor<void> {
-  final MissingEquatablePropertyRule rule;
+class MissingEquatableFieldVisitor extends SimpleAstVisitor<void> {
+  final MissingEquatableFieldRule rule;
   final RuleContext context;
 
-  MissingEquatablePropertyVisitor(this.rule, this.context);
+  MissingEquatableFieldVisitor(this.rule, this.context);
 
   @override
   void visitClassDeclaration(ClassDeclaration node) {

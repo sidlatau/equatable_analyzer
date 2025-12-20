@@ -1,23 +1,23 @@
 import 'package:analyzer/src/lint/registry.dart';
 import 'package:analyzer_testing/analysis_rule/analysis_rule.dart';
-import 'package:equatable_analyzer/src/rules/missing_equatable_property.dart';
+import 'package:equatable_analyzer/src/rules/missing_equatable_field.dart';
 import 'package:test_reflective_loader/test_reflective_loader.dart';
 
 void main() {
   defineReflectiveSuite(() {
-    defineReflectiveTests(MissingEquatablePropertyRuleTest);
+    defineReflectiveTests(MissingEquatableFieldRuleTest);
   });
 }
 
 @reflectiveTest
-class MissingEquatablePropertyRuleTest extends AnalysisRuleTest {
+class MissingEquatableFieldRuleTest extends AnalysisRuleTest {
   @override
-  String get analysisRule => 'missing_equatable_property';
+  String get analysisRule => 'missing_equatable_field';
 
   @override
   void setUp() {
     if (!Registry.ruleRegistry.any((r) => r.name == analysisRule)) {
-      Registry.ruleRegistry.registerWarningRule(MissingEquatablePropertyRule());
+      Registry.ruleRegistry.registerWarningRule(MissingEquatableFieldRule());
     }
     newPackage('equatable').addFile('lib/equatable.dart', r'''
 class Equatable {
@@ -53,7 +53,7 @@ import 'package:equatable/equatable.dart';
 
 class MyState extends Equatable {
   final String id;
-  // ignore: missing_equatable_property
+  // ignore: missing_equatable_field
   final String name;
 
   const MyState(this.id, this.name);

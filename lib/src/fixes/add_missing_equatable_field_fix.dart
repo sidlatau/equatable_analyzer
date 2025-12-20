@@ -4,14 +4,14 @@ import 'package:analyzer/dart/ast/ast.dart';
 import 'package:analyzer_plugin/utilities/change_builder/change_builder_core.dart';
 import 'package:analyzer_plugin/utilities/fixes/fixes.dart';
 
-class AddMissingEquatablePropertyFix extends ResolvedCorrectionProducer {
+class AddMissingEquatableFieldFix extends ResolvedCorrectionProducer {
   static const _addMissingPropertyKind = FixKind(
-    'add_missing_equatable_property',
+    'add_missing_equatable_field',
     DartFixKindPriority.standard,
-    "Add missing properties to props",
+    "Add missing fields to props",
   );
 
-  AddMissingEquatablePropertyFix({required super.context});
+  AddMissingEquatableFieldFix({required super.context});
 
   @override
   CorrectionApplicability get applicability =>

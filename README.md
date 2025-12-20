@@ -8,7 +8,7 @@ This plugin ensures that your `Equatable` classes are correctly implemented, pre
 
 ### Rules
 
-#### `missing_equatable_property`
+#### `missing_equatable_field`
 Detects when a `final` field in a class extending `Equatable` is missing from the `props` getter.
 
 **Good:**
