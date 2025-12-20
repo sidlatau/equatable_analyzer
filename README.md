@@ -62,22 +62,13 @@ class MyState extends Equatable {
 
 ## Installation
 
-1. Add `equatable_analyzer` as a dev dependency in your `pubspec.yaml`:
+Please refer to the [official documentation](https://dart.dev/tools/analyzer-plugins) for how to add and enable analyzer plugins.
 
+Example `analysis_options.yaml`:
 ```yaml
-dev_dependencies:
+plugins:
   equatable_analyzer: ^1.0.0
 ```
-
-2. Enable the plugin in your `analysis_options.yaml`:
-
-```yaml
-analyzer:
-  plugins:
-    - equatable_analyzer
-```
-
-3. Restart your analysis server (or run `dart analyze`).
 
 ## Configuration
 
@@ -89,4 +80,4 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENSE)
