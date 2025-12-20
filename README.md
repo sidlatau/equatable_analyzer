@@ -28,12 +28,12 @@ class MyState extends Equatable {
 ```dart
 class MyState extends Equatable {
   final String id;
-  final String name;
+  final String name; // Lint: The field 'name' is missing from props.
 
   const MyState(this.id, this.name);
 
   @override
-  List<Object> get props => [id]; // 'name' is missing!
+  List<Object> get props => [id];
 }
 ```
 
@@ -55,6 +55,10 @@ class MyState extends Equatable {
   List<Object> get props => [id];
 }
 ```
+
+## Requirements
+
+- Dart SDK: >=3.10.4
 
 ## Installation
 

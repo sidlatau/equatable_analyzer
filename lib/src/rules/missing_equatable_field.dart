@@ -25,7 +25,7 @@ class MissingEquatableFieldRule extends AnalysisRule {
 
   static const code = LintCode(
     'missing_equatable_field',
-    'The field {0} is missing from props.',
+    'The field \'{0}\' is missing from props.',
     correctionMessage: 'Add the field to props.',
   );
 
