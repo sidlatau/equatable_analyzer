@@ -51,12 +51,18 @@ class MissingEquatablePropertyVisitor extends SimpleAstVisitor<void> {
     final missingFields = _findMissingFields(element, propsGetter, node);
 
     for (final field in missingFields) {
-      final propsNode = node.members.whereType<MethodDeclaration>().firstWhere(
-        (m) => m.name.lexeme == 'props',
-        orElse: () => node.members.whereType<MethodDeclaration>().first,
-      );
+      final fieldName = field.name;
+      if (fieldName == null) continue;
 
-      rule.reportAtToken(propsNode.name, arguments: [field.name!]);
+      final fieldDeclaration = node.members
+          .whereType<FieldDeclaration>()
+          .expand((f) => f.fields.variables)
+          .cast<VariableDeclaration?>()
+          .firstWhere((v) => v?.name.lexeme == fieldName, orElse: () => null);
+
+      if (fieldDeclaration != null) {
+        rule.reportAtToken(fieldDeclaration.name, arguments: [fieldName]);
+      }
     }
   }
 

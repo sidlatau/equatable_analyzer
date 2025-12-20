@@ -23,11 +23,10 @@ class AddMissingEquatablePropertyFix extends ResolvedCorrectionProducer {
   @override
   Future<void> compute(ChangeBuilder builder) async {
     final node = this.node;
-    if (node is! MethodDeclaration) return;
-    final method = node;
 
-    final classDecl = method.parent;
-    if (classDecl is! ClassDeclaration) return;
+    // Find the class declaration whether we start at the field name or declaration
+    final classDecl = node.thisOrAncestorOfType<ClassDeclaration>();
+    if (classDecl == null) return;
 
     final element = classDecl.declaredFragment?.element;
     if (element == null) return;
@@ -42,6 +41,15 @@ class AddMissingEquatablePropertyFix extends ResolvedCorrectionProducer {
               f.name != null,
         )
         .toList();
+
+    // Find the 'props' method
+    final method = classDecl.members.whereType<MethodDeclaration>().firstWhere(
+      (m) => m.name.lexeme == 'props',
+      orElse: () => classDecl.members.whereType<MethodDeclaration>().first,
+    );
+
+    // Ensure we actually found 'props'
+    if (method.name.lexeme != 'props') return;
 
     final expression = _getReturnExpression(method);
     if (expression is! ListLiteral) return;
@@ -59,7 +67,7 @@ class AddMissingEquatablePropertyFix extends ResolvedCorrectionProducer {
     }
 
     final missingFields = fields
-        .where((f) => !includedNames.contains(f.name!))
+        .where((f) => f.name != null && !includedNames.contains(f.name))
         .toList();
 
     if (missingFields.isEmpty) return;
@@ -69,17 +77,23 @@ class AddMissingEquatablePropertyFix extends ResolvedCorrectionProducer {
       if (elements.isNotEmpty) {
         builder.addInsertion(elements.last.end, (builder) {
           for (final field in missingFields) {
-            builder.write(', ');
-            builder.write(field.name!);
+            final name = field.name;
+            if (name != null) {
+              builder.write(', ');
+              builder.write(name);
+            }
           }
         });
       } else {
         builder.addInsertion(expression.leftBracket.end, (builder) {
           for (var i = 0; i < missingFields.length; i++) {
-            if (i > 0) {
-              builder.write(', ');
+            final name = missingFields[i].name;
+            if (name != null) {
+              if (i > 0) {
+                builder.write(', ');
+              }
+              builder.write(name);
             }
-            builder.write(missingFields[i].name!);
           }
         });
       }

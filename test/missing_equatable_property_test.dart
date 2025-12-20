@@ -43,8 +43,25 @@ class MyState extends Equatable {
   List<Object> get props => [id];
 }
 ''',
-      [lint(188, 5)],
+      [lint(112, 4)],
     );
+  }
+
+  Future<void> test_ignore_field() async {
+    await assertNoDiagnostics(r'''
+import 'package:equatable/equatable.dart';
+
+class MyState extends Equatable {
+  final String id;
+  // ignore: missing_equatable_property
+  final String name;
+
+  const MyState(this.id, this.name);
+
+  @override
+  List<Object> get props => [id];
+}
+''');
   }
 
   Future<void> test_valid_class() async {
