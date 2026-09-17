@@ -36,7 +36,7 @@ class AddMissingEquatableFieldFix extends ResolvedCorrectionProducer {
         .where(
           (f) =>
               !f.isStatic &&
-              !f.isSynthetic &&
+              f.isOriginDeclaration &&
               f.isFinal &&
               !f.isConst &&
               f.name != null &&
@@ -46,10 +46,13 @@ class AddMissingEquatableFieldFix extends ResolvedCorrectionProducer {
         .toList();
 
     // Find the 'props' method
-    final method = classDecl.members.whereType<MethodDeclaration>().firstWhere(
-      (m) => m.name.lexeme == 'props',
-      orElse: () => classDecl.members.whereType<MethodDeclaration>().first,
-    );
+    final method = classDecl.body.members
+        .whereType<MethodDeclaration>()
+        .firstWhere(
+          (m) => m.name.lexeme == 'props',
+          orElse: () =>
+              classDecl.body.members.whereType<MethodDeclaration>().first,
+        );
 
     // Ensure we actually found 'props'
     if (method.name.lexeme != 'props') return;

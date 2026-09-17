@@ -55,7 +55,7 @@ class MissingEquatableFieldVisitor extends SimpleAstVisitor<void> {
       final fieldName = field.name;
       if (fieldName == null) continue;
 
-      final fieldDeclaration = node.members
+      final fieldDeclaration = node.body.members
           .whereType<FieldDeclaration>()
           .expand((f) => f.fields.variables)
           .cast<VariableDeclaration?>()
@@ -91,12 +91,15 @@ class MissingEquatableFieldVisitor extends SimpleAstVisitor<void> {
     ClassDeclaration classNode,
   ) {
     final fields = classElement.fields
-        .where((f) => !f.isStatic && !f.isSynthetic && f.isFinal && !f.isConst)
+        .where(
+          (f) =>
+              !f.isStatic && f.isOriginDeclaration && f.isFinal && !f.isConst,
+        )
         .where((f) => f.name != null)
         .where((f) => f.type is! FunctionType && !f.type.isDartCoreFunction)
         .toList();
 
-    final propsMethod = classNode.members
+    final propsMethod = classNode.body.members
         .whereType<MethodDeclaration>()
         .firstWhere(
           (m) => m.declaredFragment?.element == propsGetter,

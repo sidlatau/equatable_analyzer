@@ -58,7 +58,7 @@ class MyState extends Equatable {
 
 ## Requirements
 
-- Dart SDK: >=3.10.4
+- Dart SDK: >=3.11.0
 
 ## Installation
 
@@ -67,7 +67,7 @@ Please refer to the [official documentation](https://dart.dev/tools/analyzer-plu
 Example `analysis_options.yaml`:
 ```yaml
 plugins:
-  equatable_analyzer: ^1.0.0
+  equatable_analyzer: ^1.1.0
 ```
 
 ## Configuration
